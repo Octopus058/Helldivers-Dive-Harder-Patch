@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.1
+
+### Fixed
+
+- `install.ps1` / `revert.ps1` no longer abort when a Steam library folder lives on a drive
+  that is not connected any more; such folders are skipped.
+- Running the installer from the GitHub source archive now tells you to download the release
+  zip instead of stopping on a missing payload.
+- README and `INSTALL.txt` point at the Releases page.
+- Main menu version label now reads `Dive Harder: v.0.1.1`.
+
 ## 0.1.0
 
 First release.
@@ -51,6 +62,9 @@ First release.
   `character_state_machine` stays byte-identical inside the package.
 - The SHA256 values inside `install.ps1` and `INSTALL.txt` are written by the packaging
   script.
+- The installer skips Steam library folders that live on a disconnected drive instead of
+  aborting, and tells you off when it is run from the source archive (which has no
+  payloads).
 
 ### Known limitations
 

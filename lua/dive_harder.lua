@@ -1,4 +1,4 @@
--- Dive Harder Patch 0.1.0
+-- Dive Harder Patch 0.1.1
 -- 1) unlock defeated factions; 2) hidden objectives (question marks) shown from mission start;
 -- 3) results-screen chat font fix; 4) new MOD SETTINGS page in the pause menu;
 -- 5) main-menu version label (QoL on top, Dive Harder below it).
@@ -22,7 +22,7 @@ do
 
 	local SECTION = "diveharder"
 	local POINTS = 0.95
-	local VERSION = "Dive Harder: v.0.1.0"
+	local VERSION = "Dive Harder: v.0.1.1"
 	local MOD_TITLE = "MOD SETTINGS"
 
 	local function setting(key, default)

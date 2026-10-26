@@ -10,7 +10,7 @@ The mod works as a standalone boot package (`resource_packages/boot_dh`): it mod
 neither the game files nor the QoL files. Installing only points `boot_package` in
 `settings.ini` at the new package; uninstalling points it back.
 
-Current version: **0.1.0**
+Current version: **0.1.1**
 
 ## Features
 
@@ -23,7 +23,7 @@ Current version: **0.1.0**
 | Ping window | mean of the last 3 / 5 / 10 samples (smaller reacts faster, larger is smoother) | 5 |
 | Friends list refresh | refreshes the room list once when a filter in the multiplayer menu is opened, so host information shows without pressing refresh | auto |
 | Results-screen chat font | fixes QoL's `display_player_text` not taking effect on the results / planet reward screens | follows QoL |
-| Version label | main menu shows the QoL version on top, `Dive Harder: v.0.1.0` below it | — |
+| Version label | main menu shows the QoL version on top, `Dive Harder: v.0.1.1` below it | — |
 | Option text | option names uppercase with underscores stripped; QoL's untranslated `LOC:xxx` keys shown as readable names | — |
 
 ### MOD SETTINGS
@@ -43,7 +43,9 @@ it replaces the page with:
 
 ## Install
 
-1. Extract the release zip;
+1. Download `dive_harder_pack.zip` from the
+   [Releases page](https://github.com/Octopus058/Helldivers-Dive-Harder-Patch/releases/latest)
+   and extract it;
 2. Run `install.bat`: it finds the game directory, tells vanilla and QoL apart by the
    SHA256 of `9cf71054ea26dddf`, copies the matching payload, backs up `settings.ini` and
    points `boot_package` at `resource_packages/boot_dh`;

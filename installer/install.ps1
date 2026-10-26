@@ -8,8 +8,8 @@ $NewLine    = 'boot_package = "resource_packages/boot_dh"'
 
 $Vanilla9cfSha = '72BEBEC1C173B046B03A933EF27860BEDDECA068A575D267FBAEB2122FFFBCD4'
 $Qol9cfSha     = 'C49E4597917682C4683F5062CCBC7D54992005120D994CF965E9AA73B735473D'
-$VanillaBuild  = '1921CBAA9A039AC9AB0350F4A6B762318C41AF43FCB8956F4A23BF067287D777'
-$QolBuild      = 'F0DDA22A798FECCCED3D37C33AABC811C245679E304E6DFC1D146EA26C79F8DA'
+$VanillaBuild  = 'E66E58696407EA4FAF548D547D35284BB111276E9172C73A316D6DD02D02BE45'
+$QolBuild      = '6EC601ACF747B14666BDE309E1F60F03DF7DB7F29DDDA8B1C0039B40EE2ACF1E'
 
 function Find-Contents {
     $candidates = @()
@@ -25,24 +25,47 @@ function Find-Contents {
 
     if ($steam) {
         $steam = $steam.TrimEnd('\')
-        $candidates += (Join-Path $steam 'steamapps\common\Helldivers\contents')
-        $vdf = Join-Path $steam 'steamapps\libraryfolders.vdf'
-        if (Test-Path $vdf) {
-            $raw = Get-Content $vdf -Raw
-            foreach ($m in [regex]::Matches($raw, '"path"\s+"([^"]+)"')) {
-                $lib = $m.Groups[1].Value.Replace('\\', '\')
-                $candidates += (Join-Path $lib 'steamapps\common\Helldivers\contents')
+
+        if (Test-Path -LiteralPath $steam) {
+            $candidates += (Join-Path $steam 'steamapps\common\Helldivers\contents')
+            $vdf = Join-Path $steam 'steamapps\libraryfolders.vdf'
+
+            if (Test-Path -LiteralPath $vdf) {
+                $raw = Get-Content -LiteralPath $vdf -Raw
+
+                foreach ($m in [regex]::Matches($raw, '"path"\s+"([^"]+)"')) {
+                    $lib = $m.Groups[1].Value.Replace('\\', '\')
+
+                    # a library folder can sit on a drive that is not connected any more; skip it instead of failing
+                    if (-not $lib -or -not (Test-Path -LiteralPath $lib)) {
+                        continue
+                    }
+
+                    try {
+                        $candidates += (Join-Path $lib 'steamapps\common\Helldivers\contents')
+                    } catch { }
+                }
             }
         }
     }
 
     foreach ($c in $candidates) {
-        if (Test-Path (Join-Path $c 'settings.ini')) { return $c }
+        try {
+            if (Test-Path -LiteralPath (Join-Path $c 'settings.ini')) { return $c }
+        } catch { }
     }
 
     Write-Host 'Could not locate the Helldivers contents directory automatically.' -ForegroundColor Yellow
     $manual = Read-Host 'Paste the path (for example D:\Steam\steamapps\common\Helldivers\contents)'
-    if ($manual -and (Test-Path (Join-Path $manual 'settings.ini'))) { return $manual }
+
+    if ($manual) {
+        $manual = $manual.Trim().Trim('"')
+
+        try {
+            if (Test-Path -LiteralPath (Join-Path $manual 'settings.ini')) { return $manual }
+        } catch { }
+    }
+
     return $null
 }
 
@@ -55,6 +78,16 @@ if (-not $contents) {
 $ini = Join-Path $contents 'settings.ini'
 $dst = Join-Path $contents $BundleName
 $cf  = Join-Path $contents '9cf71054ea26dddf'
+
+$havePayload = (Test-Path -LiteralPath (Join-Path $PSScriptRoot 'dive_harder_vanilla.bin')) -or
+               (Test-Path -LiteralPath (Join-Path $PSScriptRoot 'dive_harder_qol.bin'))
+
+if (-not $havePayload) {
+    Write-Host 'No payload (*.bin) was found next to install.ps1.' -ForegroundColor Red
+    Write-Host 'The GitHub source archive does not contain the payloads:' -ForegroundColor Red
+    Write-Host 'download dive_harder_pack.zip from the Releases page and run install.bat from that folder.' -ForegroundColor Red
+    exit 1
+}
 
 if (-not (Test-Path $cf)) {
     Write-Host '9cf71054ea26dddf is missing, the game files are incomplete, installation aborted.' -ForegroundColor Red
@@ -88,8 +121,8 @@ if ($Check) {
     exit 0
 }
 
-if (-not (Test-Path $src)) {
-    Write-Host "$srcName is missing from the archive, installation aborted (extract the whole zip again)." -ForegroundColor Red
+if (-not (Test-Path -LiteralPath $src)) {
+    Write-Host "$srcName is missing from this folder, installation aborted (extract dive_harder_pack.zip again)." -ForegroundColor Red
     exit 1
 }
 if ((Get-FileHash $src -Algorithm SHA256).Hash -ne $srcSha) {

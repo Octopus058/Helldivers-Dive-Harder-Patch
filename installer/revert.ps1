@@ -20,24 +20,47 @@ function Find-Contents {
 
     if ($steam) {
         $steam = $steam.TrimEnd('\')
-        $candidates += (Join-Path $steam 'steamapps\common\Helldivers\contents')
-        $vdf = Join-Path $steam 'steamapps\libraryfolders.vdf'
-        if (Test-Path $vdf) {
-            $raw = Get-Content $vdf -Raw
-            foreach ($m in [regex]::Matches($raw, '"path"\s+"([^"]+)"')) {
-                $lib = $m.Groups[1].Value.Replace('\\', '\')
-                $candidates += (Join-Path $lib 'steamapps\common\Helldivers\contents')
+
+        if (Test-Path -LiteralPath $steam) {
+            $candidates += (Join-Path $steam 'steamapps\common\Helldivers\contents')
+            $vdf = Join-Path $steam 'steamapps\libraryfolders.vdf'
+
+            if (Test-Path -LiteralPath $vdf) {
+                $raw = Get-Content -LiteralPath $vdf -Raw
+
+                foreach ($m in [regex]::Matches($raw, '"path"\s+"([^"]+)"')) {
+                    $lib = $m.Groups[1].Value.Replace('\\', '\')
+
+                    # a library folder can sit on a drive that is not connected any more; skip it instead of failing
+                    if (-not $lib -or -not (Test-Path -LiteralPath $lib)) {
+                        continue
+                    }
+
+                    try {
+                        $candidates += (Join-Path $lib 'steamapps\common\Helldivers\contents')
+                    } catch { }
+                }
             }
         }
     }
 
     foreach ($c in $candidates) {
-        if (Test-Path (Join-Path $c 'settings.ini')) { return $c }
+        try {
+            if (Test-Path -LiteralPath (Join-Path $c 'settings.ini')) { return $c }
+        } catch { }
     }
 
     Write-Host 'Could not locate the Helldivers contents directory automatically.' -ForegroundColor Yellow
     $manual = Read-Host 'Paste the path (for example D:\Steam\steamapps\common\Helldivers\contents)'
-    if ($manual -and (Test-Path (Join-Path $manual 'settings.ini'))) { return $manual }
+
+    if ($manual) {
+        $manual = $manual.Trim().Trim('"')
+
+        try {
+            if (Test-Path -LiteralPath (Join-Path $manual 'settings.ini')) { return $manual }
+        } catch { }
+    }
+
     return $null
 }
 

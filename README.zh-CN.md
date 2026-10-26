@@ -8,7 +8,7 @@ Helldivers 1（Steam，2015）的非官方 Lua 模组：已攻破种族重新开
 模组以独立启动包（`resource_packages/boot_dh`）的形式生效：不修改游戏文件，也不修改
 QoL 的文件。安装只是把 `settings.ini` 里的 `boot_package` 指向新的启动包，卸载再指回原版。
 
-当前版本：**0.1.0**
+当前版本：**0.1.1**
 
 ## 功能
 
@@ -21,7 +21,7 @@ QoL 的文件。安装只是把 `settings.ini` 里的 `boot_package` 指向新�
 | ping 窗口 | 取最近 3 / 5 / 10 个样本的均值（越小越灵敏，越大越平滑） | 5 |
 | 好友列表刷新 | 进多人菜单筛选时自动刷新一次房间列表，不用再手动按刷新才看到 Host 信息 | 自动 |
 | 结算页聊天字体 | 修复 QoL 的 `display_player_text` 在结算 / 星球奖励页不生效的问题 | 跟随 QoL |
-| 版本号 | 主菜单 QoL 版本在上，`Dive Harder: v.0.1.0` 在下 | — |
+| 版本号 | 主菜单 QoL 版本在上，`Dive Harder: v.0.1.1` 在下 | — |
 | 文案 | 选项名统一大写、去掉下划线，QoL未翻译的 `LOC:xxx` 显示成可读键名 | — |
 
 ### MOD SETTINGS
@@ -40,7 +40,8 @@ QoL 的文件。安装只是把 `settings.ini` 里的 `boot_package` 指向新�
 
 ## 安装
 
-1. 解压发布包；
+1. 从 [Releases](https://github.com/Octopus058/Helldivers-Dive-Harder-Patch/releases/latest)
+   下载 `dive_harder_pack.zip` 并解压；
 2. 双击 `install.bat`：脚本自动找游戏目录，按 `9cf71054ea26dddf` 的 SHA256 判断纯净原版 /
    QoL，复制对应载荷，备份 `settings.ini`，并把 `boot_package` 指向
    `resource_packages/boot_dh`；

@@ -60,7 +60,8 @@ Every feature can be switched in game:
 ======================================================================
 3. How to install (automatic)
 ======================================================================
-1. Extract the whole archive anywhere
+1. Extract the whole archive anywhere (use dive_harder_pack.zip from the Releases page:
+   the GitHub source archive does not include the payloads)
 2. Run install.bat
 3. When it says the installation is complete, fully quit the game (the process) and
    start it again
@@ -126,6 +127,6 @@ Manual uninstall: change boot_package back to "resource_packages/boot".
 ======================================================================
 7. File checksums (SHA256)
 ======================================================================
-dive_harder_vanilla.bin = 1921CBAA9A039AC9AB0350F4A6B762318C41AF43FCB8956F4A23BF067287D777
-dive_harder_qol.bin     = F0DDA22A798FECCCED3D37C33AABC811C245679E304E6DFC1D146EA26C79F8DA
+dive_harder_vanilla.bin = E66E58696407EA4FAF548D547D35284BB111276E9172C73A316D6DD02D02BE45
+dive_harder_qol.bin     = 6EC601ACF747B14666BDE309E1F60F03DF7DB7F29DDDA8B1C0039B40EE2ACF1E
 boot package file name 05cd02202827e9a0 = murmur64a("resource_packages/boot_dh")
