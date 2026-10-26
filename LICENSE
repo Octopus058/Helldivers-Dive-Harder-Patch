@@ -1,0 +1,39 @@
+MIT License
+
+Copyright (c) 2026 Dive Harder Patch contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+Third-party notices
+
+This project is an unofficial mod for HELLDIVERS (© Sony Interactive Entertainment /
+Arrowhead Game Studios). It is not affiliated with or endorsed by the rights holders.
+
+The MIT license above covers the code in this repository only. It does not cover the game
+or anything derived from it:
+
+- The release archives ship a patched copy of the game's boot package
+  (`resource_packages/boot`). That data remains the property of the rights holders and is
+  meant to be used only with a legitimately owned copy of the game.
+- `vendor/base_csm.lua` is a decompiled game script. It is not part of this repository; it
+  is generated locally from the user's own installation with `tools/extract_base.py`.
+- The QoL mod is the work of its author. This patch only hooks it at runtime and
+  redistributes nothing from it.

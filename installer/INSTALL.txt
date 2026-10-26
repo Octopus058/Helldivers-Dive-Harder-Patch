@@ -1,0 +1,131 @@
+Dive Harder Patch - installation notes
+(standalone boot package: QoL is optional, QoL files are never modified, every feature has its own switch in game)
+
+======================================================================
+1. What is included
+======================================================================
+1. Unlock defeated factions
+   - factions the community has already defeated reappear on the campaign map, so their
+     planets can be selected and played
+   - the front line is placed in sector 10 (points = 95% of points_max)
+
+2. Show hidden objectives (question marks)
+   - no Humblebee UAV needed: hidden objectives are drawn with their real icon from
+     mission start
+   - equivalent to always owning the UAV Mk2 "detect hidden objectives" upgrade
+
+3. Enemy health (optional, three tiers)
+   - OFF      : vanilla health
+   - HARD     : enemy total health x1.5
+   - HELLDIVE : enemy total health x2
+   - enemies only, player health is untouched; the host decides, clients follow the
+     synced values
+   - changing the tier only affects enemies spawned afterwards
+   - the old standalone "double enemy health" package is discontinued, HELLDIVE replaces it
+
+Defaults: defeated factions = on, hidden objectives = off, enemy health = OFF.
+
+Every feature can be switched in game:
+
+  Main menu / ship / mission: press ESC -> the row below SETTINGS is MOD SETTINGS
+  MOD SETTINGS has two groups:
+    QoL          - QoL's own options (chat font, lobby name, PS buttons, camera shake,
+                   viewport scale, TRAINING, emergency beacon, skip intro, COMMENT TIME
+                   INTERVAL, interaction mode, weapon switching, allow local players,
+                   RETALIATORY MISSION CHANCE)
+    DIVE HARDER  - this patch's options (five of them)
+      UNLOCK DEFEATED FACTIONS   (OFF = defeated factions are locked again)
+      SHOW HIDDEN OBJECTIVES     (OFF = question marks come back)
+      ENEMY HEALTH               (OFF / HARD / HELLDIVE)
+      HUD PING                   (OFF / ON: PING: xx.xxms below the player ID card, left
+                                  aligned and outside the card, so it neither covers the
+                                  card nor the stratagem cooldowns; the ESC Avg Ping text
+                                  is corrected to the same RTT figure)
+      PING WINDOW                (3 / 5 / 10: how many recent samples PING averages)
+  Move to the last row, APPLY CHANGES, and confirm (or click it) to save.
+  Mouse: click a row to select it, click the left/right arrows to change a value, click
+  APPLY CHANGES to save.
+  Press ESC / Q or click BACK to leave MOD SETTINGS and return to the previous menu.
+  The QoL group only appears when QoL is installed.
+
+======================================================================
+2. Requirements
+======================================================================
+- HELLDIVERS on Steam (PC)
+- QoL mod: optional
+  * no QoL     -> the "vanilla" package is used
+  * QoL 0.29.2 -> the "QoL" package is used, QoL keeps working
+  * other QoL versions -> the installer stops and asks for a dedicated build
+
+======================================================================
+3. How to install (automatic)
+======================================================================
+1. Extract the whole archive anywhere
+2. Run install.bat
+3. When it says the installation is complete, fully quit the game (the process) and
+   start it again
+
+The script automatically:
+- locates Helldivers\contents
+- tells vanilla and QoL apart by the SHA256 of 9cf71054ea26dddf and picks the package
+- copies it to contents\05cd02202827e9a0
+- points boot_package in settings.ini at "resource_packages/boot_dh"
+- backs the original settings.ini up as settings.ini.bak_dh_<timestamp>
+
+Note: the patch works by switching the boot package (boot_package in settings.ini), so
+only one boot package can be loaded at a time. The old standalone "double enemy health"
+package is discontinued; its effect is the HELLDIVE tier of ENEMY HEALTH, so that package
+does not have to be installed any more.
+
+======================================================================
+4. How to uninstall
+======================================================================
+1. Run revert.bat
+2. Restart the game, the vanilla boot package is used again
+
+(05cd02202827e9a0 stays in the contents folder but is no longer used)
+
+======================================================================
+5. Manual installation
+======================================================================
+1. no QoL -> use dive_harder_vanilla.bin
+   QoL 0.29.2 -> use dive_harder_qol.bin
+2. Copy it into contents\ and rename it to 05cd02202827e9a0 (no extension)
+3. Open contents\settings.ini in a text editor and change the boot_package line to:
+       boot_package = "resource_packages/boot_dh"
+4. Save, fully quit the game, start it again
+
+Manual uninstall: change boot_package back to "resource_packages/boot".
+
+======================================================================
+6. Notes and known limits
+======================================================================
+- Defeated factions: only the client side is reopened and the front is moved to sector 10;
+  the server campaign is not really advanced. Mother planets (boss planets) still use the
+  local flow (boss_influence) and are not actually captured.
+- Hidden objectives: every objective that carries objective_hidden_data is shown from
+  mission start; in multiplayer the host's setting decides.
+- Enemy health: max_hitpoints and constitution (the total damage an enemy can absorb is
+  the sum of both) are scaled when the enemy spawns
+  (HealthComponent.setup_master/setup_slave); players and allies are not affected. Only a
+  host with the patch really changes combat; a client with it just sees matching health
+  bars. A tier change only affects enemies spawned afterwards.
+- Mission results for defeated factions may be ignored by the server; experience and
+  unlocks are computed locally and should still be granted (not verified).
+- Bundled fix: QoL's "Player names shown using chat font" does not take effect on the
+  results / planet reward screens (those screens read render_settings/display_player_text
+  while the QoL switch writes qol/display_player_text). The patch copies the qol value
+  after GuiManager.update, so the chat font is used there too.
+- Settings live in the "diveharder" section of user_settings.config (QoL options stay in
+  the "qol" section).
+- The MOD SETTINGS page takes over the pause menu's own option list (no extra submenu);
+  the title becomes MOD SETTINGS, and Q / ESC or BACK returns to the previous menu.
+- Option values are uppercase, underscores are stripped and the "LOC:" / "QoL:" prefixes
+  are gone.
+
+======================================================================
+7. File checksums (SHA256)
+======================================================================
+dive_harder_vanilla.bin = 1921CBAA9A039AC9AB0350F4A6B762318C41AF43FCB8956F4A23BF067287D777
+dive_harder_qol.bin     = F0DDA22A798FECCCED3D37C33AABC811C245679E304E6DFC1D146EA26C79F8DA
+boot package file name 05cd02202827e9a0 = murmur64a("resource_packages/boot_dh")

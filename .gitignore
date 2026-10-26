@@ -1,0 +1,20 @@
+# build and runtime artifacts
+build/
+dist/
+__pycache__/
+*.pyc
+
+# decompiled game base (game code, never committed; rebuild with tools/extract_base.py)
+vendor/base_csm.lua
+
+# local-only files (not part of the published sources)
+private/
+
+# compiled output
+*.bc
+*.bin
+*.zip
+
+# local backups
+*.bak
+*.bak_dh_*
